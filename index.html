@@ -68,14 +68,25 @@
                                 <tbody>
                                     <tr>
                                         <td class="bold">Unpaid Balance</td>
-                                        <td class="bold amount">{{formatNumber(w.details.stats.balance/1000000000,5)}}
-                                        </td>
+                                        <td class="bold amount">{{formatNumber(w.details.stats.balance/1000000000,5)}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="bold">Total Paid</td>
+                                        <td class="bold amount">{{formatNumber(w.details.stats.paid/1000000000,5)}}</td>                                        
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <tbody>
+                                    <tr>
                                         <td class="bold">Current Hashrate</td>
                                         <td class="hashrate">{{formatHashrate(w.details.currentHashrate)}}</td>
                                     </tr>
                                     <tr>
-                                        <td class="bold">Total Paid</td>
-                                        <td class="bold amount">{{formatNumber(w.details.stats.paid/1000000000,5)}}</td>
                                         <td class="bold">Average Hashrate</td>
                                         <td class="hashrate">{{formatHashrate(w.details.hashrate)}}</td>
                                     </tr>
