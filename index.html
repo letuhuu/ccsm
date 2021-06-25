@@ -219,11 +219,11 @@
                     }
                 },
                 compare: function (a, b) {
-                    if (a.id > b.id) {
-                        return 1;
-                    }
-                    if (a.id < b.id) {
+                    if (a.details.workersTotal > b.details.workersTotal) {
                         return -1;
+                    }
+                    if (a.details.workersTotal < b.details.workersTotal) {
+                        return 1;
                     }
                     return 0;
                 },
