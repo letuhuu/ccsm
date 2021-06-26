@@ -8,135 +8,172 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
         integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        [data-toggle="collapse"] .fa:before {
+            content: "\f139";
+        }
+
+        [data-toggle="collapse"].collapsed .fa:before {
+            content: "\f13a";
+        }
+
+        .margin-top {
+            margin-top: 5px;
+        }
+
+        .orange {
+            background-color: #FF5500;
+        }
+
+        .green {
+            color: green;
+        }
+
+        .red {
+            color: red;
+        }
+
+        .hashrate {
+            font-size: large;
+            font-weight: bold;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+        .amount {
+            font-size: large;
+        }
+        table tbody td {
+            padding: 0.5rem !important;
+        }
+    </style>
+    <script>
+    </script>
 </head>
-<style>
-    .qrcode canvas {
-        margin: 0 auto;
-        display: block;
-    }
-
-    .orange {
-        background-color: #FF5500;
-    }
-
-    .green {
-        color: green;
-    }
-
-    .red {
-        color: red;
-    }
-
-    .hashrate {
-        font-size: large;
-        font-weight: bold;
-    }
-
-    .bold {
-        font-weight: bold;
-    }
-
-    .amount {
-        font-size: large;
-    }
-</style>
 
 <body>
     <div id="app" class="container">
-        <h4 class="text-center text-success">&nbsp;</h4>
-        <h4 class="text-center text-success">CCSM Center</h4>
-        <h4 class="text-center text-success">&nbsp;</h4>
-        <div v-for="w in wallets" class="row" style="border: solid 1px #e9ecef; padding: 20px;">
-            <div class="col-xl-3">
-                <div class="qrcode" v-bind:id="'qrcode' + w.id.toString()"></div>
-                <h6 class="text-center">{{w.name}}</h6>
-                <h6 class="text-break text-center"><a v-bind:href="'https://eth.2miners.com/account/' + w.address"
-                        target="_blank">{{w.address}}</a></h6>
-            </div>
-            <div class="col">
-                <h4 class="text-center text-success">&nbsp;</h4>
-                <div class="progress">
-                    <div class="progress-bar orange" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"
-                        v-bind:style="{width : formatNumber(w.details.stats.balance/1000000000/0.05,2)*100+'%'}">
-                        {{formatNumber(w.details.stats.balance/1000000000/0.05,2)*100}}%</div>
+        <h4 class="text-center text-success" style="margin-top: 5px;">CCSM Center</h4>
+        <div id="accordion">
+            <div v-for="(w,i) in wallets" class="card margin-top">
+                <div class="card-header" v-bind:id="'heading' + w.id.toString()">
+                    <h5 class="mb-0">
+                        <button class="btn btn-light" data-toggle="collapse"
+                            v-bind:data-target="'#collapse' + w.id.toString()"
+                            v-bind:aria-expanded="i==0?'true':'false'"
+                            v-bind:aria-controls="'collapse' + w.id.toString()"><i class="fa"></i>
+                            {{w.name}}
+                        </button>
+                        <!-- <button class="btn btn-success" style="float: right;" aria-expanded="false"
+                            aria-controls="collapseTwo">
+                            <i class="fa" aria-hidden="true"></i>
+                            Refresh
+                        </button> -->
+                    </h5>
                 </div>
-                <h4 class="text-center text-success">&nbsp;</h4>
-                <div class="row">
-                    <div class="col">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <tbody>
-                                    <tr>
-                                        <td class="bold">Unpaid Balance</td>
-                                        <td class="bold amount">{{formatNumber(w.details.stats.balance/1000000000,5)}}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="bold">Total Paid</td>
-                                        <td class="bold amount">{{formatNumber(w.details.stats.paid/1000000000,5)}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <tbody>
-                                    <tr>
-                                        <td class="bold">Current Hashrate</td>
-                                        <td class="hashrate">{{formatHashrate(w.details.currentHashrate)}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="bold">Average Hashrate</td>
-                                        <td class="hashrate">{{formatHashrate(w.details.hashrate)}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Period<br></th>
-                                        <th>ETH</th>
-                                        <th>USD</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="(sw,i) in w.details.sumrewards">
-                                        <td>{{sw.name}}</td>
-                                        <td>{{formatNumber(sw.reward/1000000000,5)}}</td>
-                                        <td>{{formatNumber(sw.reward/1000000000*price,2)}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Worker</th>
-                                        <th>Last Beat</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="(value, name) in w.details.workers">
-                                        <td>{{name}}</td>
-                                        <td>{{formatDateTime(value.lastBeat)}}</td>
-                                        <td style="text-align: center;"><i
-                                                v-bind:class="['fa', value.offline?'fa-times':'fa-check', value.offline?'red':'green']"></i>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                <div v-bind:id="'collapse' + w.id.toString()" v-bind:aria-labelledby="'heading' + w.id.toString()"
+                    data-parent="#accordion" v-bind:class="['collapse', i==0?'show':'']">
+                    <div class="card-body">
+                        <div class="container">
+                            <div class="row" style="border: solid 1px #e9ecef; padding: 20px;">
+                                <div class="col">
+                                    <h6 class="text-break text-center"><a
+                                            v-bind:href="'https://eth.2miners.com/account/' + w.address"
+                                            target="_blank">{{w.address}}</a></h6>
+                                    <div class="progress">
+                                        <div class="progress-bar orange" aria-valuenow="50" aria-valuemin="0"
+                                            aria-valuemax="100"
+                                            v-bind:style="{width : formatNumber(w.details.stats.balance/1000000000/0.05,2)*100+'%'}">
+                                            {{formatNumber(w.details.stats.balance/1000000000/0.05,2)*100}}%</div>
+                                    </div>
+                                    <h4 class="text-center text-success">&nbsp;</h4>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="bold">Unpaid Balance</td>
+                                                            <td class="bold amount">
+                                                                {{formatNumber(w.details.stats.balance/1000000000,5)}}
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="bold">Total Paid</td>
+                                                            <td class="bold amount">
+                                                                {{formatNumber(w.details.stats.paid/1000000000,5)}}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="bold">Current Hashrate</td>
+                                                            <td class="hashrate">
+                                                                {{formatHashrate(w.details.currentHashrate)}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="bold">Average Hashrate</td>
+                                                            <td class="hashrate">{{formatHashrate(w.details.hashrate)}}
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Period<br></th>
+                                                            <th>ETH</th>
+                                                            <th>USD</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr v-for="(sw,i) in w.details.sumrewards">
+                                                            <td>{{sw.name}}</td>
+                                                            <td>{{formatNumber(sw.reward/1000000000,5)}}</td>
+                                                            <td>{{formatNumber(sw.reward/1000000000*price,2)}}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Worker</th>
+                                                            <th>Last Beat</th>
+                                                            <th>Status</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr v-for="(value, name) in w.details.workers">
+                                                            <td>{{name}}</td>
+                                                            <td>{{formatDateTime(value.lastBeat)}}</td>
+                                                            <td style="text-align: center;"><i
+                                                                    v-bind:class="['fa', value.offline?'fa-times':'fa-check', value.offline?'red':'green']"></i>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -237,7 +274,7 @@
                     else if (a.details.workersTotal < b.details.workersTotal) {
                         return 1;
                     }
-                    else {                        
+                    else {
                         if (a.details.hashrate > b.details.hashrate) {
                             return -1;
                         }
