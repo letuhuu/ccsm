@@ -28,7 +28,10 @@ var vapp = new Vue({
                 var self = this;
                 wallets.forEach(w => {
                     this.$http.get(MINER_POOL_URL + w.address).then(response => {
-                        this.twallet.push({ id: w.id, name: w.name, address: w.address, details: response.body })
+                        let result = response.body;
+                        result.sumrewards.splice(3, 0, {inverval: 0, reward: this.getTodayReward(result.rewards), numreward: 0, name: "Today", offset: 0})
+                        result.sumrewards.splice(4, 0, {inverval: 0, reward: this.getYesterReward(result.rewards), numreward: 0, name: "Yesterday", offset: 0})
+                        this.twallet.push({ id: w.id, name: w.name, address: w.address, details: result })
                         if (this.c == wallets.length - 1) {
                             this.wallets = this.twallet.sort(this.compare);
                             /* setTimeout(() => {
@@ -80,6 +83,22 @@ var vapp = new Vue({
             }
             return 0;
         },
+        getTimestamp: function () {
+            let today = new Date();
+            today.setHours(0, 0, 0, 0);
+            return [moment(today).add(-1, 'days').unix(), moment(today).unix(), moment(today).add(1, 'days').unix()]
+        },
+        getReward: function (rewards, from, to) {
+            return rewards.filter(n => n.timestamp >= from && n.timestamp < to).map(n => n.reward).reduce((a, b) => a + b, 0)
+        },
+        getTodayReward: function (rewards) {
+            let t = this.getTimestamp();
+            return this.getReward(rewards, t[1], t[2]);
+        },
+        getYesterReward: function (rewards) {
+            let t = this.getTimestamp();
+            return this.getReward(rewards, t[0], t[1]);
+        }
         /*sum: function () {
             return this.coin_list.map(n => n.amount * n.price).reduce((a, b) => a + b, 0)
         } */
@@ -87,6 +106,18 @@ var vapp = new Vue({
     mounted: function () {
         this.getEthPrice();
         this.getAllWallet();
+        /* let url = "https://eth.2miners.com/api/accounts/0xdd5b869766620e3f0d744025e9ea04e2dd14eeb5";
+        let timestamps = this.getTimestamp();
+        console.log(timestamps);
+        this.$http.get(url).then(response => {
+            let rewards = response.body.rewards;
+            let todayReward = rewards.filter(n => n.timestamp >= timestamps[1] && n.timestamp < timestamps[2]).map(n => n.reward).reduce((a, b) => a + b, 0)
+            let yesterdayReward = rewards.filter(n => n.timestamp >= timestamps[0] && n.timestamp < timestamps[1]).map(n => n.reward).reduce((a, b) => a + b, 0)
+            console.log(todayReward)
+            console.log(yesterdayReward)
+        }, response => {
+            console.log(response)
+        }); */
         /* let ids = this.coin_list.map(n => n.name).join(',');
         this.getCoinPrice(ids);
         setInterval(() => {
