@@ -123,6 +123,10 @@ var vapp = new Vue({
         return this.formatNumber(hr, 1) + " MH/s";
       }
     },
+    formatWorkerHashrate: function (hash) {
+        let hr = hash / 1000000;
+        return this.formatNumber(hr, 0)
+      },
     compare: function (a, b) {
       if (a.details.workersTotal > b.details.workersTotal) {
         return -1;
