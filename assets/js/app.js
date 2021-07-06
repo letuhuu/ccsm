@@ -1,4 +1,5 @@
-const WALLET_SERVICE_URL = "https://5d073b61fa00250014577c37.mockapi.io/wallet";
+//const WALLET_SERVICE_URL = "https://5d073b61fa00250014577c37.mockapi.io/wallet";
+const WALLET_SERVICE_URL = "https://testapi.io/api/letuhuu/wallet";
 const MINER_POOL_URL = "https://eth.2miners.com/api/accounts/"
 const PRICE_SERVICE_URL = "https://api.coingecko.com/api/v3/simple/price?vs_currencies=usd&ids=ethereum"
 var vapp = new Vue({
@@ -106,6 +107,13 @@ var vapp = new Vue({
     mounted: function () {
         this.getEthPrice();
         this.getAllWallet();
+       /*  this.$http.get("https://testapi.io/api/letuhuu/wallet").then(response => {
+            let result = response.body;
+            console.log(result);
+        }, response => {
+            console.log(response)
+        }); */
+        
         /* let url = "https://eth.2miners.com/api/accounts/0xdd5b869766620e3f0d744025e9ea04e2dd14eeb5";
         let timestamps = this.getTimestamp();
         console.log(timestamps);
@@ -132,6 +140,18 @@ var vapp = new Vue({
         }
         let data = { owner_uid : "2e63d448-3ce6-4efd-914a-2f7fb1dfc5eb", pagination :  { count : 50, offset : 0 } }
         this.$http.get(url).then(response => {
+            console.log(response);                        
+        }, response => {
+            console.log(response)
+        }); */
+        //let url = "https://oapi.raveos.com/v1/get_worker_info/369035";
+/*         let headers = {
+            'Content-Type': 'application/json',
+            "x-auth-token": "eab7fd16-644f-4136-89d4-379d4b52e0ec"
+        }
+        let url = "https://app.swaggerhub.com/proxy?url=https%3A%2F%2Foapi.raveos.com%2Fv1%2Fget_worker_info%2F369035&proxy-token=97000nx"
+        //et data = { owner_uid : "2e63d448-3ce6-4efd-914a-2f7fb1dfc5eb", pagination :  { count : 50, offset : 0 } }
+        this.$http.get(url, headers).then(response => {
             console.log(response);                        
         }, response => {
             console.log(response)
