@@ -1,5 +1,5 @@
-//const WALLET_SERVICE_URL = "https://5d073b61fa00250014577c37.mockapi.io/wallet";
-const WALLET_SERVICE_URL = "https://testapi.io/api/letuhuu/wallet";
+const WALLET_SERVICE_URL = "https://5d073b61fa00250014577c37.mockapi.io/wallet";
+//const WALLET_SERVICE_URL = "https://testapi.io/api/letuhuu/wallet";
 const MINER_POOL_URL = "https://eth.2miners.com/api/accounts/";
 const PRICE_SERVICE_URL =
   "https://api.coingecko.com/api/v3/simple/price?vs_currencies=usd&ids=ethereum";
