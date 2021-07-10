@@ -3,6 +3,7 @@ const WALLET_SERVICE_URL = "https://5d073b61fa00250014577c37.mockapi.io/wallet";
 const MINER_POOL_URL = "https://eth.2miners.com/api/accounts/";
 const PRICE_SERVICE_URL =
   "https://api.coingecko.com/api/v3/simple/price?vs_currencies=usd&ids=ethereum";
+const REWARD_SERVICE_URL = "https://5d073b61fa00250014577c37.mockapi.io/reward";
 const WALLETS = [
   {
     id: 1,
@@ -56,7 +57,7 @@ var vapp = new Vue({
     getAllWallet: function () {
       this.$http.get(WALLET_SERVICE_URL).then(
         (response) => {
-            this.loadMiners(response.body);
+          this.loadMiners(response.body);
           /* let wallets = response.body;
           this.c = 0;
           this.twallet = [];
@@ -103,7 +104,7 @@ var vapp = new Vue({
           }); */
         },
         (response) => {
-           this.loadMiners(WALLETS);
+          this.loadMiners(WALLETS);
           //console.log(response);
         }
       );
@@ -124,9 +125,9 @@ var vapp = new Vue({
       }
     },
     formatWorkerHashrate: function (hash) {
-        let hr = hash / 1000000;
-        return this.formatNumber(hr, 0)
-      },
+      let hr = hash / 1000000;
+      return this.formatNumber(hr, 0);
+    },
     compare: function (a, b) {
       if (a.details.workersTotal > b.details.workersTotal) {
         return -1;
@@ -194,6 +195,7 @@ var vapp = new Vue({
             });
             if (this.c == wallets.length - 1) {
               this.wallets = this.twallet.sort(this.compare);
+              this.saveYesterdayReward();
               /* setTimeout(() => {
                                 let wallets = self.wallets;
                                 wallets.forEach(wallet => {
@@ -208,6 +210,38 @@ var vapp = new Vue({
           }
         );
       });
+    },
+    saveYesterdayReward: function () {
+      let lastUpdate = localStorage.getItem('lastUpdate');
+      let yeterday = moment(new Date()).add(-1, "days").format("DD/MM/YYYY");
+      if (lastUpdate == null || lastUpdate != yeterday) {
+        //Get from server
+        this.$http.get(`${REWARD_SERVICE_URL}?date=${yeterday}`).then(
+          (response) => {
+            let rewards = response.body;
+            this.wallets.forEach((w) => {
+              let found = rewards.find(n=>n.wallet == w.address);
+              if( found == undefined){
+                  //post reward
+                  let data = {
+                    "reward": this.getYesterReward(w.details.rewards),
+                    "wallet": w.address,
+                    "date": yeterday
+                  }
+                  this.postReward(data);
+              } 
+            });
+          },
+          (response) => {
+            console.log(response);
+          }
+        );
+        //Update localstorage
+        localStorage.setItem('lastUpdate',yeterday);
+      }
+    },
+    postReward: function (data) {
+      this.$http.post(REWARD_SERVICE_URL,data);
     },
     /*sum: function () {
             return this.coin_list.map(n => n.amount * n.price).reduce((a, b) => a + b, 0)
