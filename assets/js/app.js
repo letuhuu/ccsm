@@ -134,9 +134,9 @@ var vapp = new Vue({
       } else if (a.details.workersTotal < b.details.workersTotal) {
         return 1;
       } else {
-        if (a.details.currentHashrate > b.details.currentHashrate) {
+        if (a.id < b.id) {
           return -1;
-        } else if (a.details.currentHashrate < b.details.currentHashrate) {
+        } else if (a.id > b.id) {
           return 1;
         }
       }
@@ -212,36 +212,57 @@ var vapp = new Vue({
       });
     },
     saveYesterdayReward: function () {
-      let lastUpdate = localStorage.getItem('lastUpdate');
-      let yeterday = moment(new Date()).add(-1, "days").format("DD/MM/YYYY");
-      if (lastUpdate == null || lastUpdate != yeterday) {
+      let lastUpdate = localStorage.getItem("lastUpdate");
+      let yesterday = moment(new Date()).add(-1, "days").format("DD/MM/YYYY");
+      if (lastUpdate == null || lastUpdate != yesterday) {
         //Get from server
-        this.$http.get(`${REWARD_SERVICE_URL}?date=${yeterday}`).then(
+        this.$http.get(`${REWARD_SERVICE_URL}?date=${yesterday}`).then(
           (response) => {
             let rewards = response.body;
-            this.wallets.forEach((w) => {
-              let found = rewards.find(n=>n.wallet == w.address);
-              if( found == undefined){
-                  //post reward
-                  let data = {
-                    "reward": this.getYesterReward(w.details.rewards),
-                    "wallet": w.address,
-                    "date": yeterday
-                  }
-                  this.postReward(data);
-              } 
-            });
+            let postData = this.wallets
+              .filter(
+                (w) => rewards.find((r) => r.wallet == w.wallet) == undefined
+              )
+              .map((w) => ({
+                reward: this.getYesterReward(w.details.rewards),
+                wallet: w.address,
+                date: yesterday,
+              }));
+            if (postData.length > 0) {
+              this.postReward(postData);
+            }
           },
           (response) => {
             console.log(response);
           }
         );
         //Update localstorage
-        localStorage.setItem('lastUpdate',yeterday);
+        localStorage.setItem("lastUpdate", yesterday);
       }
     },
-    postReward: function (data) {
-      this.$http.post(REWARD_SERVICE_URL,data);
+    postReward: async function (postData) {
+      for (let i = 0; i < postData.length; i++) {
+        let response = await this.$http.post(REWARD_SERVICE_URL, postData[i]);
+        // console.log(response);
+        // console.log(moment(new Date()).format("YYYY-MM-DDTHH:mm:ss.SSS"));
+      }
+    },
+    test: async function () {
+      for (let i = 0; i < 10; i++) {
+        let response = await this.test1({
+          name: i,
+          avatar: `avatar${i}`,
+        });
+        console.log(response);
+        console.log(moment(new Date()).format("YYYY-MM-DDTHH:mm:ss.SSS"));
+      }
+    },
+    test1: async function (data) {
+      let response = await this.$http.post(
+        "https://5d073b61fa00250014577c37.mockapi.io/test",
+        data
+      );
+      return response;
     },
     /*sum: function () {
             return this.coin_list.map(n => n.amount * n.price).reduce((a, b) => a + b, 0)
@@ -250,6 +271,8 @@ var vapp = new Vue({
   mounted: function () {
     this.getEthPrice();
     this.getAllWallet();
+    //this.test();
+
     /*  this.$http.get("https://testapi.io/api/letuhuu/wallet").then(response => {
             let result = response.body;
             console.log(result);
