@@ -219,9 +219,10 @@ var vapp = new Vue({
         this.$http.get(`${REWARD_SERVICE_URL}?date=${yesterday}`).then(
           (response) => {
             let rewards = response.body;
+            //console.log(rewards);
             let postData = this.wallets
               .filter(
-                (w) => rewards.find((r) => r.wallet == w.wallet) == undefined
+                (w) => rewards.every((r) => r.wallet != w.address)
               )
               .map((w) => ({
                 reward: this.getYesterReward(w.details.rewards),
@@ -229,6 +230,7 @@ var vapp = new Vue({
                 date: yesterday,
               }));
             if (postData.length > 0) {
+              //console.log(postData);
               this.postReward(postData);
             }
           },
