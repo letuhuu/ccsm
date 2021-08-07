@@ -112,6 +112,13 @@ var vapp = new Vue({
     formatNumber: function (number, precision) {
       return number.toFixed(precision).replace(/\d(?=(\d{3})+\.)/g, "$&,");
     },
+    formatNumber1: function (number, precision) {
+      let res = number.toFixed(precision).replace(/\d(?=(\d{3})+\.)/g, "$&,");
+      while(res.endsWith('0')){
+        res = res.substring(0,res.length - 1);
+      }
+      return res;
+    },
     formatDateTime: function (timestamp) {
       let dt = new Date(timestamp * 1000);
       return moment(dt).fromNow();

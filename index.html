@@ -188,12 +188,14 @@
                         aria-valuenow="50"
                         aria-valuemin="0"
                         aria-valuemax="100"
-                        v-bind:style="{width : formatNumber(w.details.stats.balance/1000000000/0.05*100,0)+'%'}"
+                        v-bind:style="{width : formatNumber(w.details.stats.balance/w.details.config.minPayout*100,0)+'%'}"
                       >
-                        {{formatNumber(w.details.stats.balance/1000000000/0.05*100,0)}}%
+                        {{formatNumber(w.details.stats.balance/w.details.config.minPayout*100,0)}}%
                       </div>
                     </div>
-                    <h4 class="text-center text-success">&nbsp;</h4>
+                    <br/>
+                    <!-- <span>{{formatNumber1(w.details.config.minPayout/1000000000,4)}} ETH</span> -->
+                    <!--<h4 class="text-center text-success">&nbsp;</h4>-->
                     <div class="row">
                       <div class="col">
                         <div class="table-responsive">
@@ -202,7 +204,7 @@
                               <tr>
                                 <td class="bold">Unpaid Balance</td>
                                 <td class="bold amount">
-                                  {{formatNumber(w.details.stats.balance/1000000000,5)}}
+                                  {{formatNumber(w.details.stats.balance/1000000000,5)}}/{{formatNumber1(w.details.config.minPayout/1000000000,4)}}
                                 </td>
                               </tr>
                               <tr>
@@ -341,6 +343,6 @@
       referrerpolicy="no-referrer"
     ></script>
     <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
-    <script src="assets/js/app.min.js?v=210716"></script>
+    <script src="assets/js/app.min.js?v=210807"></script>
   </body>
 </html>
