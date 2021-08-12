@@ -114,8 +114,8 @@ var vapp = new Vue({
     },
     formatNumber1: function (number, precision) {
       let res = number.toFixed(precision).replace(/\d(?=(\d{3})+\.)/g, "$&,");
-      while(res.endsWith('0')){
-        res = res.substring(0,res.length - 1);
+      while (res.endsWith("0")) {
+        res = res.substring(0, res.length - 1);
       }
       return res;
     },
@@ -219,6 +219,9 @@ var vapp = new Vue({
       });
     },
     saveYesterdayReward: function () {
+      let today = new Date();
+      today.setHours(8, 0, 0, 0);
+      if (new Date() < today) return;
       let lastUpdate = localStorage.getItem("lastUpdate");
       let yesterday = moment(new Date()).add(-1, "days").format("DD/MM/YYYY");
       if (lastUpdate == null || lastUpdate != yesterday) {
@@ -228,9 +231,7 @@ var vapp = new Vue({
             let rewards = response.body;
             //console.log(rewards);
             let postData = this.wallets
-              .filter(
-                (w) => rewards.every((r) => r.wallet != w.address)
-              )
+              .filter((w) => rewards.every((r) => r.wallet != w.address))
               .map((w) => ({
                 reward: this.getYesterReward(w.details.rewards),
                 wallet: w.address,
