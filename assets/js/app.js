@@ -159,6 +159,7 @@ var vapp = new Vue({
       ];
     },
     getReward: function (rewards, from, to) {
+      if(rewards == null) return 0;
       return rewards
         .filter((n) => n.timestamp >= from && n.timestamp < to)
         .map((n) => n.reward)
@@ -175,7 +176,7 @@ var vapp = new Vue({
     loadMiners: function (wallets) {
       this.c = 0;
       this.twallet = [];
-      var self = this;
+      //var self = this;
       wallets.forEach((w) => {
         this.$http.get(MINER_POOL_URL + w.address).then(
           (response) => {
