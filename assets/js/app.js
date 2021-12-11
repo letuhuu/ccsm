@@ -4,7 +4,7 @@ const MINER_POOL_URL = "https://eth.2miners.com/api/accounts/";
 const PRICE_SERVICE_URL =
   "https://api.coingecko.com/api/v3/simple/price?vs_currencies=usd&ids=ethereum";
 const REWARD_SERVICE_URL = "https://5d073b61fa00250014577c37.mockapi.io/reward";
-const WALLETS = [
+/*const WALLETS = [
   {
     id: 1,
     name: "daulay",
@@ -31,7 +31,57 @@ const WALLETS = [
     name: "luanchuong",
     address: "0x866d5887f3585d24def05c19d6484ae6af49892e",
   },
-];
+];*/
+const WALLETS = [
+  {
+   "createdAt": "2021-06-25T03:02:54.232Z",
+   "address": "13NknbGKvD79sNR1YjbvwvceNEEX82E9tP",
+   "name": "daulay",
+   "id": "1"
+  },
+  {
+   "createdAt": "2021-06-24T19:43:37.322Z",
+   "address": "16eoDJis8ELeL7R1vLPb2mzHZUJD6Q7tHT",
+   "name": "lcl",
+   "id": "2"
+  },
+  {
+   "createdAt": "2021-06-25T03:02:54.232Z",
+   "address": "0x866d5887f3585d24def05c19d6484ae6af49892e",
+   "name": "luanchuong",
+   "id": "3"
+  },
+  {
+   "createdAt": "2021-06-24T19:43:37.322Z",
+   "address": "14J3iotu2KfZAge3eSCdQrkL1G3uFgRA45",
+   "name": "tinEth",
+   "id": "4"
+  },
+  {
+   "createdAt": "2021-06-24T19:43:37.322Z",
+   "address": "nano_3hdaqgjf1c6f58pqago1apz9qywnjtrxpnpk5rxzqpxetqt6c8xame1mbe8q",
+   "name": "tula",
+   "id": "5"
+  },
+  {
+   "createdAt": "2021-06-24T19:43:37.322Z",
+   "address": "1321aJoCfS2BsFPmA1VAGrJ1rZ9GDbX6An",
+   "name": "daulay2",
+   "id": "6"
+  },
+  {
+   "createdAt": "2021-06-24T19:43:37.322Z",
+   "address": "186QMAbopPfZBzFqqdbSHVieoojnvhws9k",
+   "name": "thien1",
+   "id": "7"
+  },
+  {
+   "createdAt": "2021-06-24T19:43:37.322Z",
+   "address": "1P2KYdCiqacTX9e2wE9zQxsZrPP1NxiSPY",
+   "name": "anhluan",
+   "id": "8"
+  }
+ ];
 var vapp = new Vue({
   el: "#app",
   data: {
