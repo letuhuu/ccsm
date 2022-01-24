@@ -59,7 +59,7 @@ const WALLETS = [
   },
   {
    "createdAt": "2021-06-24T19:43:37.322Z",
-   "address": "nano_3hdaqgjf1c6f58pqago1apz9qywnjtrxpnpk5rxzqpxetqt6c8xame1mbe8q",
+   "address": "19VniaW7vPGtDH3gs1SNAcawKUUcjQmftr",
    "name": "tula",
    "id": "5"
   },
