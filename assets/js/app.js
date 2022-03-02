@@ -80,6 +80,12 @@ const WALLETS = [
    "address": "1P2KYdCiqacTX9e2wE9zQxsZrPP1NxiSPY",
    "name": "anhluan",
    "id": "8"
+  },
+  {
+   "createdAt": "2021-06-24T19:43:37.322Z",
+   "address": "1FU6C5mWwFCrcNYQ2EDfDjiJ6E255mdPvP",
+   "name": "nhat",
+   "id": "9"
   }
  ];
 var vapp = new Vue({
